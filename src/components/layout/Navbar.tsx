@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useCartStore } from "@/stores/cart.store";
 
 const navLinks = [
   { label: "NEW IN", href: "/new-in" },
@@ -15,6 +16,8 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { openDrawer, items } = useCartStore();
+  const cartCount = items.reduce((s, i) => s + i.quantity, 0);
 
   return (
     <header className="sticky top-0 z-50 bg-[#6b1040] shadow-md">
@@ -80,13 +83,18 @@ export default function Navbar() {
             >
               <Heart size={20} strokeWidth={1.5} />
             </Link>
-            <Link
-              href="/cart"
+            <button
+              onClick={openDrawer}
               aria-label="Cart"
               className="relative text-white/90 transition-colors hover:text-[#c5962a]"
             >
               <ShoppingBag size={20} strokeWidth={1.5} />
-            </Link>
+              {cartCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c5295d] text-[9px] font-bold text-white">
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
+            </button>
 
             {/* Mobile menu toggle */}
             <button
