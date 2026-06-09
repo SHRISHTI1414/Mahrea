@@ -20,13 +20,22 @@ export async function generateMetadata({
   await connectDB();
   const product = await Product.findOne({ slug, isPublished: true }).lean();
   if (!product) return { title: "Not Found" };
+  const desc = product.description || `Buy ${product.name} at Mahrea. Handcrafted jewellery for the modern Indian woman.`;
+  const image = product.images[0];
   return {
     title: `${product.name} | Mahrea`,
-    description: product.description || `Buy ${product.name} at Mahrea. Handcrafted jewellery for the modern Indian woman.`,
+    description: desc,
     openGraph: {
       title: product.name,
-      description: product.description,
-      images: product.images[0] ? [product.images[0]] : [],
+      description: desc,
+      type: "website",
+      images: image ? [{ url: image, width: 800, height: 800, alt: product.name }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description: desc,
+      images: image ? [image] : [],
     },
   };
 }

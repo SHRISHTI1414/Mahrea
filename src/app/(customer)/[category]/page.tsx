@@ -29,9 +29,16 @@ export async function generateMetadata({
   await connectDB();
   const cat = await Category.findOne({ slug: category, isActive: true }).lean();
   if (!cat) return { title: "Not Found" };
+  const desc = cat.description || `Shop ${cat.name} at Mahrea — handcrafted jewellery for the modern Indian woman.`;
   return {
     title: `${cat.name} | Mahrea`,
-    description: cat.description || `Shop ${cat.name} at Mahrea — handcrafted jewellery for the modern Indian woman.`,
+    description: desc,
+    openGraph: {
+      title: `${cat.name} | Mahrea`,
+      description: desc,
+      images: cat.heroImage ? [{ url: cat.heroImage, width: 1200, height: 630, alt: cat.name }] : [],
+    },
+    twitter: { card: "summary_large_image", title: `${cat.name} | Mahrea`, description: desc },
   };
 }
 
