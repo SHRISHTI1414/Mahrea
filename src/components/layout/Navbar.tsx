@@ -2,22 +2,30 @@
 
 import Link from "next/link";
 import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart.store";
 
 const navLinks = [
-  { label: "NEW IN", href: "/new-in" },
-  { label: "SHOP", href: "/shop" },
-  { label: "COLLECTIONS", href: "/collections" },
-  { label: "GIFTS", href: "/gifts" },
-  { label: "WEDDING LITE", href: "/wedding-lite" },
-  { label: "ANTI TARNISH JEWELLERY", href: "/anti-tarnish-jewellery" },
+  { label: "RINGS", href: "/rings" },
+  { label: "EARRINGS", href: "/earrings" },
+  { label: "NECKLACES", href: "/necklaces" },
+  { label: "BRACELETS", href: "/bracelets" },
+  { label: "ANKLETS", href: "/anklets" },
+  { label: "SETS", href: "/sets" },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { openDrawer, items } = useCartStore();
   const cartCount = items.reduce((s, i) => s + i.quantity, 0);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => setIsLoggedIn(!!d?.user))
+      .catch(() => {});
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-[#6b1040] shadow-md">
@@ -70,11 +78,14 @@ export default function Navbar() {
               <Search size={20} strokeWidth={1.5} />
             </button>
             <Link
-              href="/account"
+              href={isLoggedIn ? "/account" : "/login"}
               aria-label="Account"
-              className="text-white/90 transition-colors hover:text-[#c5962a]"
+              className="relative text-white/90 transition-colors hover:text-[#c5962a]"
             >
               <User size={20} strokeWidth={1.5} />
+              {isLoggedIn && (
+                <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-[#c5962a]" />
+              )}
             </Link>
             <Link
               href="/account/wishlist"

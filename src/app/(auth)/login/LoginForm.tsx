@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") ?? "/";
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ emailOrPhone: "", password: "" });
@@ -35,7 +38,7 @@ export default function LoginForm() {
         setError(data.message || "Login failed. Please try again.");
         return;
       }
-      window.location.href = "/";
+      window.location.href = next;
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {

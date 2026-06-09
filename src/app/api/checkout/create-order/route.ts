@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import Cart from "@/models/Cart";
 import Order from "@/models/Order";
 import { razorpay } from "@/lib/razorpay";
+import { verifyAccessToken } from "@/lib/auth/jwt";
 
 function generateOrderNumber(): string {
   const ts = Date.now().toString(36).toUpperCase();
@@ -26,6 +27,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Incomplete shipping address" }, { status: 400 });
     }
 
+    // Attach userId if logged in
+    let userId: string | undefined;
+    try {
+      const token = req.cookies.get("access_token")?.value;
+      if (token) userId = verifyAccessToken(token).userId;
+    } catch { /* guest checkout — no userId */ }
+
     const GIFT_WRAP_PRICE = 199;
     const subtotal = cart.items.reduce((s, i) => s + i.price * i.quantity, 0);
     const giftWrapCharge = cart.items.filter((i) => i.giftWrap).length * GIFT_WRAP_PRICE;
@@ -42,6 +50,7 @@ export async function POST(req: NextRequest) {
     // Create Order in DB with pending payment
     const order = await Order.create({
       orderNumber: generateOrderNumber(),
+      ...(userId ? { userId } : {}),
       items: cart.items.map((i) => ({
         product: i.product,
         name: i.name,
