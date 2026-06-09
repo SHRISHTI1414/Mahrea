@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/shrishtiyadav/Documents/BIGBETSAI/Mahrea status)",
+      "Bash(gh auth *)"
+    ]
+  }
+}
