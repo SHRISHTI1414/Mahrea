@@ -34,7 +34,13 @@ export default function SignupForm() {
         setError(data.message || "Sign up failed. Please try again.");
         return;
       }
-      window.location.href = "/";
+      // Phone signups need OTP verification
+      const isPhone = /^[6-9]\d{9}$/.test(form.emailOrPhone.replace(/\s+/g, ""));
+      if (isPhone) {
+        window.location.href = `/verify-otp?phone=${encodeURIComponent(form.emailOrPhone)}`;
+      } else {
+        window.location.href = "/";
+      }
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
