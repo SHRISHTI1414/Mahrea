@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* Mahrea Brand Colours */
+  --color-mahrea-maroon: #6b1040;
+  --color-mahrea-maroon-dark: #4a0a2c;
+  --color-mahrea-maroon-light: #8b1a54;
+  --color-mahrea-pink: #c5295d;
+  --color-mahrea-pink-dark: #a8204d;
+  --color-mahrea-pink-light: #e03373;
+  --color-mahrea-cream: #fdf4ee;
+  --color-mahrea-blush: #fce8f0;
+  --color-mahrea-input: #f5c8d4;
+  --color-mahrea-gold: #c5962a;
+  --color-mahrea-gold-light: #d4a93d;
+
+  /* Fonts */
+  --font-playfair: var(--font-playfair);
+  --font-dm-sans: var(--font-dm-sans);
+}
+
+body {
+  background-color: var(--color-mahrea-cream);
+  color: var(--color-mahrea-maroon);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Input autofill override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #f5c8d4 inset;
+  -webkit-text-fill-color: #6b1040;
+}
