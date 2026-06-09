@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import LoginForm from "./LoginForm";
 
@@ -10,18 +11,17 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <main className="relative flex flex-1 items-center justify-center overflow-hidden">
-      {/* Background — blush with botanical/petal mood, matches Figma */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundColor: "#fce8f0" }}
+      {/* Background photo */}
+      <Image
+        src="/images/login-bg.png"
+        alt=""
+        fill
+        priority
+        className="object-cover object-center"
         aria-hidden="true"
-      >
-        {/* Decorative petal blobs – pure CSS so no image asset needed until client provides photo */}
-        <div className="absolute -left-16 top-1/4 h-64 w-64 rounded-full bg-[#f5a8c0]/30 blur-3xl" />
-        <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-[#f9d0dc]/50 blur-2xl" />
-        <div className="absolute bottom-0 left-1/4 h-40 w-40 rounded-full bg-[#e8a0b8]/20 blur-2xl" />
-        <div className="absolute bottom-8 right-1/4 h-32 w-32 rounded-full bg-[#f5c8d4]/40 blur-xl" />
-      </div>
+      />
+      {/* Subtle overlay so the card reads cleanly over the photo */}
+      <div className="absolute inset-0 bg-[#6b1040]/10" aria-hidden="true" />
 
       {/* Card */}
       <div className="relative z-10 mx-4 w-full max-w-md rounded-2xl bg-white/80 px-8 py-10 shadow-xl backdrop-blur-sm sm:mx-0">

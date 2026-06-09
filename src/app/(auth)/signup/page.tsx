@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import SignupForm from "./SignupForm";
 
@@ -10,17 +11,17 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <main className="relative flex flex-1 items-center justify-center overflow-hidden">
-      {/* Background — lighter pink petal mood (matches Figma signup bg) */}
-      <div
-        className="absolute inset-0"
-        style={{ backgroundColor: "#fde8f0" }}
+      {/* Background photo */}
+      <Image
+        src="/images/signup-bg.png"
+        alt=""
+        fill
+        priority
+        className="object-cover object-center"
         aria-hidden="true"
-      >
-        <div className="absolute -right-16 top-1/4 h-72 w-72 rounded-full bg-[#f9c0d4]/40 blur-3xl" />
-        <div className="absolute left-0 bottom-0 h-56 w-56 rounded-full bg-[#f5d0e0]/50 blur-2xl" />
-        <div className="absolute left-1/3 top-8 h-36 w-36 rounded-full bg-[#f0b0cc]/30 blur-2xl" />
-        <div className="absolute bottom-12 right-1/3 h-28 w-28 rounded-full bg-[#fcd8e8]/40 blur-xl" />
-      </div>
+      />
+      {/* Subtle overlay */}
+      <div className="absolute inset-0 bg-[#c5295d]/5" aria-hidden="true" />
 
       {/* Card */}
       <div className="relative z-10 mx-4 w-full max-w-md rounded-2xl bg-white/80 px-8 py-10 shadow-xl backdrop-blur-sm sm:mx-0">
