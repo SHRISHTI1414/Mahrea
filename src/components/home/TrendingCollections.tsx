@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const COLLECTIONS = [
-  { name: "Milan Muse",     slug: "milan-muse",     tag: "Italian Inspired", from: "from-[#f5e8ef]", to: "to-[#fde8d4]", accent: "#6b1040" },
-  { name: "Wild Edit",      slug: "wild-edit",      tag: "Nature Forward",   from: "from-[#e8f5ee]", to: "to-[#f0fde8]", accent: "#2d5a3d" },
-  { name: "Golden Hour",    slug: "golden-hour",    tag: "Sunset Gold",      from: "from-[#3a0820]", to: "to-[#6b1040]", accent: "#c5962a" },
-  { name: "Summer Crochet", slug: "summer-crochet", tag: "Boho Vibes",       from: "from-[#e8eef5]", to: "to-[#f5e8fd]", accent: "#6b1040" },
+  { name: "Milan Muse",     slug: "milan-muse",     tag: "Italian Inspired", gradientFrom: "#f5e8ef", gradientTo: "#fde8d4", accent: "#6b1040" },
+  { name: "Wild Edit",      slug: "wild-edit",      tag: "Nature Forward",   gradientFrom: "#e8f5ee", gradientTo: "#f0fde8", accent: "#2d5a3d" },
+  { name: "Golden Hour",    slug: "golden-hour",    tag: "Sunset Gold",      gradientFrom: "#3a0820", gradientTo: "#6b1040", accent: "#c5962a" },
+  { name: "Summer Crochet", slug: "summer-crochet", tag: "Boho Vibes",       gradientFrom: "#e8eef5", gradientTo: "#f5e8fd", accent: "#6b1040" },
 ];
 
 export default function TrendingCollections() {
@@ -25,7 +25,7 @@ export default function TrendingCollections() {
       <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
         {COLLECTIONS.map((col) => (
           <Link key={col.slug} href={`/collections/${col.slug}`} className="group">
-            <div className={`relative mb-3 flex h-64 flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br ${col.from} ${col.to} p-5 lg:h-80`}>
+            <div className="relative mb-3 flex h-64 flex-col justify-end overflow-hidden rounded-2xl p-5 lg:h-80" style={{ background: `linear-gradient(135deg, ${col.gradientFrom}, ${col.gradientTo})` }}>
               {/* Decorative lines */}
               <div className="absolute left-0 right-0 top-1/3 h-px bg-black/5" />
               <div className="absolute bottom-1/3 left-0 right-0 h-px bg-black/5" />

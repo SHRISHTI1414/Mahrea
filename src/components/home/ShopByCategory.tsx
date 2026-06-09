@@ -26,7 +26,7 @@ export default function ShopByCategory() {
             href={`/${cat.slug}`}
             className="group flex flex-col items-center gap-3"
           >
-            <div className="relative flex h-36 w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border border-white/15 bg-white/8 transition-all duration-300 group-hover:bg-white/15 group-hover:scale-[1.03]">
+            <div className="relative flex h-36 w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border border-white/20 bg-white/10 transition-all duration-300 group-hover:bg-white/15 group-hover:scale-[1.03]">
               {/* Decorative */}
               <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />
               <span className="relative text-xs tracking-widest text-[#c5962a]/70">{cat.ornament}</span>

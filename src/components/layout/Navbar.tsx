@@ -6,12 +6,12 @@ import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart.store";
 
 const navLinks = [
-  { label: "RINGS", href: "/rings" },
-  { label: "EARRINGS", href: "/earrings" },
-  { label: "NECKLACES", href: "/necklaces" },
-  { label: "BRACELETS", href: "/bracelets" },
-  { label: "ANKLETS", href: "/anklets" },
-  { label: "SETS", href: "/sets" },
+  { label: "NEW IN", href: "/new-in" },
+  { label: "SHOP", href: "/shop" },
+  { label: "COLLECTIONS", href: "/collections" },
+  { label: "GIFTS", href: "/gifts" },
+  { label: "WEDDING LITE", href: "/wedding-lite" },
+  { label: "ANTI TARNISH JEWELLERY", href: "/anti-tarnish-jewellery" },
 ];
 
 export default function Navbar() {

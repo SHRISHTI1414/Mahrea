@@ -1,9 +1,9 @@
 const TESTIMONIALS = [
-  { name: "Priya S.",    quote: "The anti-tarnish earrings I got are still shining after 8 months! Absolutely love them.", initials: "PS", bg: "bg-[#f5c8d4]" },
-  { name: "Riya M.",    quote: "Beautiful packaging, super quick delivery. Gifted to my sister — she was thrilled!", initials: "RM", bg: "bg-[#c8d4f5]" },
-  { name: "Ananya K.",  quote: "Wore the ruby pendant set for my cousin's wedding. Got so many compliments.", initials: "AK", bg: "bg-[#d4f5c8]" },
-  { name: "Sneha T.",   quote: "Affordable luxury is exactly how I'd describe Mahrea. Great quality for the price.", initials: "ST", bg: "bg-[#f5e8c8]" },
-  { name: "Divya R.",   quote: "The stacking rings are my everyday staple now. Already ordered two more sets!", initials: "DR", bg: "bg-[#f5c8e8]" },
+  { name: "Priya S.",    quote: "The anti-tarnish earrings I got are still shining after 8 months! Absolutely love them.", initials: "PS", bgColor: "#f5c8d4" },
+  { name: "Riya M.",    quote: "Beautiful packaging, super quick delivery. Gifted to my sister — she was thrilled!", initials: "RM", bgColor: "#c8d4f5" },
+  { name: "Ananya K.",  quote: "Wore the ruby pendant set for my cousin's wedding. Got so many compliments.", initials: "AK", bgColor: "#d4f5c8" },
+  { name: "Sneha T.",   quote: "Affordable luxury is exactly how I'd describe Mahrea. Great quality for the price.", initials: "ST", bgColor: "#f5e8c8" },
+  { name: "Divya R.",   quote: "The stacking rings are my everyday staple now. Already ordered two more sets!", initials: "DR", bgColor: "#f5c8e8" },
 ];
 
 export default function Testimonials() {
@@ -37,7 +37,7 @@ export default function Testimonials() {
             <p className="flex-1 text-xs leading-relaxed text-[#6b1040]/75">&ldquo;{t.quote}&rdquo;</p>
             {/* Author */}
             <div className="flex items-center gap-3">
-              <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ${t.bg} text-xs font-bold text-[#6b1040]`}>
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-[#6b1040]" style={{ backgroundColor: t.bgColor }}>
                 {t.initials}
               </div>
               <span className="text-xs font-semibold text-[#6b1040]">{t.name}</span>
