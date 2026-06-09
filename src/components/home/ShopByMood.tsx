@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 const MOODS = [
-  { label: "Everyday Minimal", slug: "everyday-minimal", bg: "from-[#fde8f0] to-[#fdf4ee]",    emoji: "🌸" },
-  { label: "Office Luxe",      slug: "office-luxe",      bg: "from-[#f0e8fd] to-[#fdf4ee]",    emoji: "💼" },
-  { label: "Date Night Glow",  slug: "date-night-glow",  bg: "from-[#fde8e8] to-[#fdf0e8]",    emoji: "🕯️" },
-  { label: "Wedding Light",    slug: "wedding-light",    bg: "from-[#fde8f0] to-[#f5e8fd]",    emoji: "💍" },
-  { label: "Party Glam",       slug: "party-glam",       bg: "from-[#fdf0e8] to-[#fde8f0]",    emoji: "✨" },
-  { label: "Gift Edit",        slug: "gift-edit",        bg: "from-[#e8f0fd] to-[#e8fdf0]",    emoji: "🎁" },
+  { label: "Everyday\nMinimal",  slug: "everyday-minimal", from: "from-[#f9e8ef]", to: "to-[#fdf4ee]",  accent: "#c5295d" },
+  { label: "Office\nLuxe",       slug: "office-luxe",       from: "from-[#ede8f9]", to: "to-[#f4f0fd]",  accent: "#6b1040" },
+  { label: "Date Night\nGlow",   slug: "date-night-glow",   from: "from-[#3a0820]", to: "to-[#6b1040]",  accent: "#c5962a" },
+  { label: "Wedding\nLight",     slug: "wedding-light",     from: "from-[#f9eee8]", to: "to-[#fdf4ee]",  accent: "#c5962a" },
+  { label: "Party\nGlam",        slug: "party-glam",        from: "from-[#c5295d]", to: "to-[#6b1040]",  accent: "#fff"    },
+  { label: "Gift\nEdit",         slug: "gift-edit",         from: "from-[#e8f0f9]", to: "to-[#eef4f9]",  accent: "#6b1040" },
 ];
 
 export default function ShopByMood() {
@@ -14,29 +14,25 @@ export default function ShopByMood() {
     <section className="bg-[#fdf4ee] px-6 py-16 sm:px-12 lg:px-20">
       <div className="mb-10 text-center">
         <p className="mb-2 text-xs font-medium tracking-[0.3em] text-[#c5962a] uppercase">Curated For You</p>
-        <h2
-          className="text-3xl font-bold text-[#6b1040] lg:text-4xl"
-          style={{ fontFamily: "var(--font-playfair)" }}
-        >
+        <h2 className="text-3xl font-bold text-[#6b1040] lg:text-4xl" style={{ fontFamily: "var(--font-playfair)" }}>
           Shop by Mood
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
         {MOODS.map((mood) => (
-          <Link
-            key={mood.slug}
-            href={`/mood/${mood.slug}`}
-            className="group flex flex-col items-center gap-3"
-          >
-            <div
-              className={`h-36 w-full rounded-2xl bg-gradient-to-br ${mood.bg} border border-[#6b1040]/8 flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-md`}
-            >
-              <span className="text-3xl">{mood.emoji}</span>
+          <Link key={mood.slug} href={`/mood/${mood.slug}`} className="group">
+            <div className={`relative flex h-40 flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${mood.from} ${mood.to} transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-lg`}>
+              {/* Decorative ring */}
+              <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full border-2 border-white/10" />
+              <div className="absolute -bottom-3 -left-3 h-14 w-14 rounded-full border border-white/10" />
+              <p
+                className="relative z-10 whitespace-pre-line text-center text-sm font-semibold leading-snug"
+                style={{ color: mood.accent, fontFamily: "var(--font-playfair)" }}
+              >
+                {mood.label}
+              </p>
             </div>
-            <span className="text-center text-xs font-medium text-[#6b1040] leading-tight group-hover:text-[#c5295d] transition-colors">
-              {mood.label}
-            </span>
           </Link>
         ))}
       </div>
