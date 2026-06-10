@@ -55,6 +55,8 @@ export default function HeroSlider() {
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#6b1040]/75 via-[#6b1040]/35 to-transparent" />
+      {/* Top vignette — separates hero from navbar visually */}
+      <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/30 to-transparent" />
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-center px-10 sm:px-20 lg:px-28">

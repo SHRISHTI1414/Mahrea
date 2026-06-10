@@ -70,7 +70,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#6b1040] shadow-md">
+    <header className="sticky top-0 z-50 bg-[#6b1040] border-b border-[#c5962a]/25 shadow-[0_4px_28px_rgba(0,0,0,0.45)]">
       {/* ── Search bar (slides down from header) ─────────────────────────── */}
       {searchOpen && (
         <div className="border-b border-white/10 bg-[#3a0820] px-4 py-3">
@@ -97,7 +97,7 @@ export default function Navbar() {
       )}
 
       <div className="mx-auto max-w-[1440px] px-4 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
+        <div className="flex h-[72px] items-center justify-between gap-4">
 
           {/* ── Logo ───────────────────────────────────────────────────────── */}
           <Link href="/" className="flex shrink-0 items-center gap-2">
