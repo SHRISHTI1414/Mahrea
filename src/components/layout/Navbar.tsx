@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Search, User, Heart, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
@@ -100,26 +101,15 @@ export default function Navbar() {
         <div className="flex h-[72px] items-center justify-between gap-4">
 
           {/* ── Logo ───────────────────────────────────────────────────────── */}
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c5962a]">
-              <span
-                className="text-sm font-bold leading-none text-[#c5962a]"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                MR
-              </span>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span
-                className="text-lg font-bold tracking-widest text-[#c5962a]"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                MAHREA
-              </span>
-              <span className="text-[9px] tracking-[0.25em] text-[#c5962a]/80">
-                SPARKLE EVERYDAY
-              </span>
-            </div>
+          <Link href="/" className="flex shrink-0 items-center">
+            <Image
+              src="/images/mahrea-logo-transparent.png"
+              alt="Mahrea — Sparkle Everyday"
+              width={120}
+              height={120}
+              className="h-[72px] w-[72px] object-contain"
+              priority
+            />
           </Link>
 
           {/* ── Desktop Nav ────────────────────────────────────────────────── */}
