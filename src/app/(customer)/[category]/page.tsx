@@ -14,7 +14,7 @@ import MobileFilterDrawer from "@/components/products/MobileFilterDrawer";
 
 export const revalidate = 1800; // 30 minutes
 
-const CATEGORY_SLUGS = ["rings", "earrings", "necklaces", "bracelets", "anklets", "sets"];
+const CATEGORY_SLUGS = ["rings", "earrings", "necklaces", "bracelets", "anklets", "sets", "pendants", "pendant-sets"];
 
 export async function generateStaticParams() {
   return CATEGORY_SLUGS.map((slug) => ({ category: slug }));
