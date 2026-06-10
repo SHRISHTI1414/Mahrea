@@ -4,6 +4,16 @@ import Product from "@/models/Product";
 
 export const dynamic = "force-dynamic";
 
+const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Generate 4-char n-grams from a word — catches single insert/delete typos
+// e.g. "earings" → ["eari","arin","ring","ings"] — "ring"/"ings" match "earrings"
+function ngrams(word: string, n = 4): string[] {
+  const result: string[] = [];
+  for (let i = 0; i <= word.length - n; i++) result.push(word.slice(i, i + n));
+  return result;
+}
+
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q")?.trim() ?? "";
   if (!q) return NextResponse.json({ products: [], total: 0 });
@@ -11,11 +21,29 @@ export async function GET(req: NextRequest) {
   try {
     await connectDB();
 
-    const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    const words = q.split(/\s+/).filter(Boolean);
+
+    // For each word: exact regex + 4-gram patterns (tolerates 1-char typos)
+    const patterns: RegExp[] = [];
+    for (const w of words) {
+      patterns.push(new RegExp(escape(w), "i")); // exact
+      if (w.length >= 5) {
+        for (const gram of ngrams(w)) {
+          patterns.push(new RegExp(escape(gram), "i")); // n-gram substring
+        }
+      }
+    }
+
+    // Deduplicate patterns by source string
+    const unique = [...new Map(patterns.map((r) => [r.source, r])).values()];
+
+    const orConditions = unique.flatMap((r) => [
+      { name: r }, { tags: r },
+    ]);
 
     const raw = await Product.find({
       isPublished: true,
-      $or: [{ name: regex }, { tags: regex }, { description: regex }],
+      $or: orConditions,
     })
       .sort({ isFeatured: -1, createdAt: -1 })
       .limit(48)

@@ -41,10 +41,25 @@ export default async function SearchPage({
 
   if (query) {
     await connectDB();
-    const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const ngrams = (w: string, n = 4): string[] => {
+      const r: string[] = [];
+      for (let i = 0; i <= w.length - n; i++) r.push(w.slice(i, i + n));
+      return r;
+    };
+
+    const words = query.split(/\s+/).filter(Boolean);
+    const patterns: RegExp[] = [];
+    for (const w of words) {
+      patterns.push(new RegExp(escape(w), "i"));
+      if (w.length >= 5) ngrams(w).forEach((g) => patterns.push(new RegExp(escape(g), "i")));
+    }
+    const unique = [...new Map(patterns.map((r) => [r.source, r])).values()];
+    const orConditions = unique.flatMap((r) => [{ name: r }, { tags: r }]);
+
     const raw = await Product.find({
       isPublished: true,
-      $or: [{ name: regex }, { tags: regex }, { description: regex }],
+      $or: orConditions,
     })
       .sort({ isFeatured: -1, createdAt: -1 })
       .limit(48)
