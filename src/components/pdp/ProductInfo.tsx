@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Heart, ShoppingBag, Share2, CheckCircle } from "lucide-react";
+import { useCartStore } from "@/stores/cart.store";
+import { useWishlistStore } from "@/stores/wishlist.store";
 
 interface Variant {
   size: string;
@@ -12,6 +14,7 @@ interface ProductInfoProps {
   product: {
     _id: string;
     name: string;
+    slug: string;
     price: number;
     discountPrice?: number;
     description: string;
@@ -22,16 +25,22 @@ interface ProductInfoProps {
     stock: number;
     categorySlug: string;
     tags: string[];
+    images: string[];
+    isFeatured: boolean;
   };
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+  const { addItem, loading } = useCartStore();
+  const { toggle, isWishlisted } = useWishlistStore();
+
   const [selectedSize, setSelectedSize] = useState<string>(
     product.variants[0]?.size ?? ""
   );
   const [giftWrap, setGiftWrap] = useState(false);
-  const [wishlisted, setWishlisted] = useState(false);
   const [added, setAdded] = useState(false);
+
+  const wishlisted = isWishlisted(product._id);
 
   const discount = product.discountPrice
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
@@ -45,9 +54,41 @@ export default function ProductInfo({ product }: ProductInfoProps) {
   const inStock = stockCount > 0;
   const lowStock = stockCount > 0 && stockCount <= 5;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    await addItem({
+      productId: product._id,
+      productSlug: product.slug,
+      categorySlug: product.categorySlug,
+      name: product.name,
+      image: product.images[0] ?? "",
+      price: totalPrice,
+      size: selectedSize || undefined,
+      giftWrap,
+      quantity: 1,
+    });
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    setTimeout(() => setAdded(false), 2500);
+  };
+
+  const handleWishlist = () => {
+    toggle({
+      _id: product._id,
+      name: product.name,
+      slug: product.slug,
+      categorySlug: product.categorySlug,
+      price: product.price,
+      discountPrice: product.discountPrice,
+      images: product.images,
+      metal: product.metal,
+    });
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({ title: product.name, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+    }
   };
 
   return (
@@ -158,7 +199,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       <div className="flex gap-3">
         <button
           onClick={handleAddToCart}
-          disabled={!inStock}
+          disabled={!inStock || loading}
           className={`flex flex-1 items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition-all ${
             added
               ? "bg-green-600 text-white"
@@ -168,11 +209,17 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           }`}
         >
           <ShoppingBag size={16} />
-          {added ? "Added to Cart!" : inStock ? `Add to Cart — ₹${totalPrice.toLocaleString("en-IN")}` : "Out of Stock"}
+          {added
+            ? "Added to Cart!"
+            : loading
+            ? "Adding…"
+            : inStock
+            ? `Add to Cart — ₹${totalPrice.toLocaleString("en-IN")}`
+            : "Out of Stock"}
         </button>
         <button
-          onClick={() => setWishlisted((w) => !w)}
-          aria-label="Wishlist"
+          onClick={handleWishlist}
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
           className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#6b1040]/20 transition-colors hover:border-[#c5295d] hover:bg-[#fde8f0]"
         >
           <Heart
@@ -182,6 +229,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           />
         </button>
         <button
+          onClick={handleShare}
           aria-label="Share"
           className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#6b1040]/20 transition-colors hover:border-[#6b1040]"
         >

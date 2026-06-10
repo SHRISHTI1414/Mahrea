@@ -11,21 +11,17 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Navbar top-level links
-      { source: "/new-in",                    destination: "/earrings?sort=newest", permanent: false },
+      // Navbar TRENDING → featured earrings (until dedicated trending page is built)
       { source: "/trending",                  destination: "/earrings?sort=featured", permanent: false },
-      // Dropdown editorial links
+      // Editorial / legacy routes
       { source: "/indian-ethnic",             destination: "/earrings",          permanent: false },
       { source: "/gifts",                     destination: "/sets",              permanent: false },
       { source: "/wedding-lite",              destination: "/necklaces",         permanent: false },
-      // Legacy / removed nav links
       { source: "/shop",                      destination: "/earrings",          permanent: false },
       { source: "/collections",               destination: "/sets",              permanent: false },
       { source: "/anti-tarnish-jewellery",    destination: "/earrings",          permanent: false },
       // ShopByMood tiles
       { source: "/mood/:slug",                destination: "/earrings",          permanent: false },
-      // Wishlist (not built yet)
-      { source: "/account/wishlist",          destination: "/account",           permanent: false },
     ];
   },
 };

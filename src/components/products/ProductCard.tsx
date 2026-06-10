@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { useState } from "react";
+import { useWishlistStore } from "@/stores/wishlist.store";
+import { useCartStore } from "@/stores/cart.store";
 
 interface ProductCardProps {
   product: {
@@ -28,11 +30,32 @@ const PLACEHOLDER_GRADIENTS: Record<string, string> = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const [wishlisted, setWishlisted] = useState(false);
+  const { toggle, isWishlisted } = useWishlistStore();
+  const { addItem, loading } = useCartStore();
+  const [adding, setAdding] = useState(false);
+
+  const wishlisted = isWishlisted(product._id);
   const gradient = PLACEHOLDER_GRADIENTS[product.metal] ?? PLACEHOLDER_GRADIENTS.multi;
   const discount = product.discountPrice
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
     : 0;
+  const displayPrice = product.discountPrice ?? product.price;
+
+  const handleQuickAdd = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    setAdding(true);
+    await addItem({
+      productId: product._id,
+      productSlug: product.slug,
+      categorySlug: product.categorySlug,
+      name: product.name,
+      image: product.images[0] ?? "",
+      price: displayPrice,
+      giftWrap: false,
+      quantity: 1,
+    });
+    setAdding(false);
+  };
 
   return (
     <div className="group relative">
@@ -67,13 +90,36 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
           </div>
+
+          {/* Quick-add overlay — shows on hover */}
+          <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-200 group-hover:translate-y-0">
+            <button
+              onClick={handleQuickAdd}
+              disabled={adding || loading}
+              className="flex w-full items-center justify-center gap-2 bg-[#6b1040]/90 py-3 text-[11px] font-semibold tracking-wider text-white backdrop-blur-sm transition-colors hover:bg-[#3a0820]/90"
+            >
+              <ShoppingBag size={13} />
+              {adding ? "Adding…" : "Add to Bag"}
+            </button>
+          </div>
         </div>
       </Link>
 
       {/* Wishlist button */}
       <button
-        onClick={() => setWishlisted((w) => !w)}
-        aria-label="Add to wishlist"
+        onClick={() =>
+          toggle({
+            _id: product._id,
+            name: product.name,
+            slug: product.slug,
+            categorySlug: product.categorySlug,
+            price: product.price,
+            discountPrice: product.discountPrice,
+            images: product.images,
+            metal: product.metal,
+          })
+        }
+        aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
         className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
       >
         <Heart
