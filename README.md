@@ -1,84 +1,85 @@
-# Mahrea — Premium Jewellery Platform
+# Mahrea — Sparkle Everyday
 
-> Fine jewellery inspired by global trends, crafted for the now. Sparkle Everyday.
+Premium anti-tarnish jewellery platform. 6 categories: Earrings, Bracelets, Pendants, Anklets, Indian Ethnic, Rings.
 
 ---
 
-## What is Mahrea?
+## Structure
 
-Mahrea is a premium D2C jewellery e-commerce platform offering rings, earrings, bracelets, pendants, anklets, and Indian ethnic jewellery. Built for customers who want beautiful, anti-tarnish jewellery with a seamless online shopping experience.
-
-This repository contains the complete codebase for:
-- **Customer Website** — Discovery, browsing, cart, checkout, and orders
-- **Admin Dashboard** — Full operational control over products, content, orders, and inventory
+```
+Mahrea/
+├── frontend/   # Next.js 15 App Router (TypeScript + Tailwind CSS v4)
+└── backend/    # Express 4 REST API (MongoDB + Mongoose)
+```
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
+| | |
 |---|---|
-| Framework | Next.js 15 (App Router) + TypeScript |
-| Styling | Tailwind CSS 4 |
-| Database | MongoDB + Mongoose ODM |
-| Authentication | JWT (httpOnly cookies) |
-| Media | Cloudinary (images + video) |
+| Frontend | Next.js 15, TypeScript, Tailwind CSS v4, Playfair Display + DM Sans |
+| Backend | Express 4, Mongoose 8, JWT auth |
+| Database | MongoDB Atlas |
 | Payment | Razorpay (UPI, Cards) |
-| Email | Resend + React Email |
-| Hosting | Vercel + MongoDB Atlas |
+| Hosting | Vercel (frontend) + Railway/Render (backend) |
 
 ---
 
-## Project Status
+## Getting Started
 
-| Phase | Scope | Status |
-|---|---|---|
-| Phase 0 | Project setup, documentation, git structure | ✅ Complete |
-| Phase 1 | Auth | 🔜 Next |
-| Phase 2 | Homepage | ⏳ Pending |
-| Phase 3 | Category Pages | ⏳ Pending |
-| Phase 4 | Product Detail Page | ⏳ Pending |
-| Phase 5 | Cart & Checkout | ⏳ Pending |
-| Phase 6 | Admin Dashboard | ⏳ Pending |
-
----
-
-## Repository Structure
-
+**Frontend**
+```bash
+cd frontend
+npm install
+cp .env.local.example .env.local   # set NEXT_PUBLIC_API_URL
+npm run dev                         # → http://localhost:3000
 ```
-mahrea/
-├── src/
-│   ├── app/
-│   │   ├── (customer)/         # Customer-facing pages
-│   │   ├── (auth)/             # Login, Signup, OTP
-│   │   ├── (admin)/            # Admin dashboard
-│   │   └── api/                # Route Handlers (API layer)
-│   ├── components/             # React components
-│   ├── lib/                    # Business logic, utilities
-│   ├── models/                 # Mongoose data models
-│   ├── hooks/                  # Custom React hooks
-│   ├── stores/                 # Zustand client state
-│   └── types/                  # TypeScript types
-├── public/                     # Static assets
-├── docs/                       # Architecture and analysis docs
-└── [Planning Documents]        # PRD, scope, roadmap
+
+**Backend**
+```bash
+cd backend
+npm install
+cp .env.example .env               # set MONGODB_URI, JWT_SECRET, ADMIN_JWT_SECRET
+npm run dev                         # → http://localhost:5000
 ```
 
 ---
 
-## Key Documents
+## Pages
 
-| Document | Purpose |
+| Route | Description |
 |---|---|
-| [PROJECT_SCOPE.md](PROJECT_SCOPE.md) | What is and is not in Phase 1 |
-| [PHASE_1_DELIVERY.md](PHASE_1_DELIVERY.md) | Client-facing delivery plan |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Technical architecture |
-| [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md) | 10–12 day delivery timeline |
-| [FEATURE_INVENTORY.md](FEATURE_INVENTORY.md) | Complete feature list by phase |
-| [API_REQUIREMENTS.md](API_REQUIREMENTS.md) | All API endpoints |
-| [DATA_COLLECTION_REQUIREMENTS.md](DATA_COLLECTION_REQUIREMENTS.md) | Assets needed from client |
-| [docs/Figma-Analysis.md](docs/Figma-Analysis.md) | Design gap analysis |
-| [docs/PRD.md](docs/PRD.md) | Full product requirements |
+| `/` | Homepage — hero, category grid, brand story, New In, gift packaging |
+| `/category/[slug]` | Category listing with banner and product grid |
+| `/product/[slug]` | Product detail — gallery, gift wrap add-on, add to cart |
+| `/cart` | Cart with qty controls and order summary |
+| `/new-in` | New arrivals grid |
+| `/search` | Live debounced search |
+| `/login` | Customer login |
+| `/register` | Customer registration |
+
+## API Routes
+
+| Prefix | Description |
+|---|---|
+| `/api/auth` | Register, login, me |
+| `/api/products` | List (filters: category, featured, newIn, q) + get by slug |
+| `/api/categories` | List + get by slug |
+| `/api/cart` | Guest cart keyed by `x-guest-id` header |
+| `/api/orders` | Create order, my orders |
+| `/api/admin` | Admin login + full CRUD (products, categories, orders) |
+
+---
+
+## Configuration
+
+All editable content lives in one file — [`frontend/src/lib/config.ts`](frontend/src/lib/config.ts):
+
+- Site name and tagline
+- Navigation links
+- All 6 categories (label, slug, banner image, tagline)
+- API URL
 
 ---
 
@@ -86,29 +87,5 @@ mahrea/
 
 | Branch | Purpose |
 |---|---|
-| `main` | Production — only merged from `development` |
-| `development` | Integration branch — all features merge here |
-| `feature/auth` | Login, Signup, OTP |
-| `feature/homepage` | Homepage + all sections |
-| `feature/categories` | 6 category listing pages |
-| `feature/pdp` | Product Detail Page |
-| `feature/cart` | Cart functionality |
-| `feature/checkout` | Checkout + Razorpay payment |
-| `feature/admin` | Admin dashboard |
-
----
-
-## Development Rules
-
-1. One feature branch per phase — never mix feature work
-2. Commit after every major task with a clean, descriptive message
-3. Push after every commit — no local-only work
-4. Update documentation after each feature is complete
-5. Request approval before moving to the next phase
-6. No hardcoded content — everything editable from admin
-
----
-
-## Contact
-
-Built for Mahrea by the founding engineering team.
+| `main` | Production |
+| `feature/admin` | Active development |
